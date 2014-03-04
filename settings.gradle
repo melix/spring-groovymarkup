@@ -1,1 +1,3 @@
 rootProject.name = 'spring-groovymarkup'
+
+include 'example-boot'

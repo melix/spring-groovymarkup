@@ -20,7 +20,9 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.AbstractCachingViewResolver;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class MarkupTemplateViewResolver extends AbstractCachingViewResolver implements Ordered {
 
@@ -30,6 +32,7 @@ public class MarkupTemplateViewResolver extends AbstractCachingViewResolver impl
 
     private MarkupTemplateEngine engine;
     private int order;
+    private Map<String,Map<String,String>> viewModels = new HashMap<>();
 
     public String getBaseName() {
         return baseName;
@@ -49,7 +52,12 @@ public class MarkupTemplateViewResolver extends AbstractCachingViewResolver impl
 
     @Override
     protected View loadView(final String viewName, final Locale locale) throws Exception {
-        return new GroovyTemplateEngineView(engine.createTemplateByPath(createTemplatePath(viewName, locale)));
+        Map<String, String> model = viewModels.get(viewName);
+        if (model!=null) {
+            return new GroovyTemplateEngineView(engine.createTypeCheckedModelTemplateByPath(createTemplatePath(viewName, locale), model));
+        } else {
+            return new GroovyTemplateEngineView(engine.createTemplateByPath(createTemplatePath(viewName, locale)));
+        }
     }
 
     private String createTemplatePath(final String viewName, final Locale locale) {
@@ -65,5 +73,13 @@ public class MarkupTemplateViewResolver extends AbstractCachingViewResolver impl
     @Override
     public int getOrder() {
         return order;
+    }
+
+    public Map<String, Map<String, String>> getViewModels() {
+        return viewModels;
+    }
+
+    public void setViewModels(final Map<String, Map<String, String>> viewModels) {
+        this.viewModels = viewModels;
     }
 }

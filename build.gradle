@@ -1,14 +1,23 @@
-apply plugin: 'java'
-apply plugin: 'idea'
-
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+}
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
+configurations {
+    provided
+}
+sourceSets {
+    main { compileClasspath += configurations.provided }
+}
+
+
 dependencies {
-    compile "javax.servlet:servlet-api:2.5"
-    compile 'org.codehaus.groovy:groovy-all:2.3.0-SNAPSHOT'
-    compile 'org.springframework:spring-webmvc:4.0.2.RELEASE'
+    provided "javax.servlet:servlet-api:2.5"
+    provided 'org.codehaus.groovy:groovy-all:2.3.0-SNAPSHOT'
+    provided 'org.springframework:spring-webmvc:4.0.2.RELEASE'
 }
 

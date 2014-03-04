@@ -1,12 +1,14 @@
-@Grab('org.springframework:spring-webmvc:4.0.2.RELEASE')
-@Grab('javax.servlet:servlet-api:2.5')
+package com.acme.boot
+
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.ViewResolver
 import org.springframework.web.servlet.groovy.MarkupTemplateViewResolver
 import groovy.text.markup.MarkupTemplateEngine
 import groovy.text.markup.TemplateConfiguration
 
 @Configuration
-class EngineConfig {
+class EngineConfiguration {
 
     @Bean
     public TemplateConfiguration templateConfiguration() {
@@ -15,15 +17,16 @@ class EngineConfig {
 
     @Bean
     public MarkupTemplateEngine templateEngine() {
-	new MarkupTemplateEngine(this.class.classLoader, new File('.'), templateConfiguration())
+	    new MarkupTemplateEngine(this.class.classLoader, templateConfiguration())
     }
 
     @Bean
-    public ViewResolver viewResolver(){
+    public ViewResolver myViewResolver(){
         def viewResolver = new MarkupTemplateViewResolver()
         viewResolver.engine = templateEngine()
-        viewResolver.order = 1
- 
+        viewResolver.order = 0
+        viewResolver.viewModels['typechecked.groovy'] = [title:'String']
+
         viewResolver
     }
 }
