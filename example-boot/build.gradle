@@ -25,10 +25,7 @@ repositories {
 dependencies {
     compile("org.codehaus.groovy:groovy:$groovyVersion")
     compile("org.codehaus.groovy:groovy-templates:$groovyVersion")
-    compile("org.springframework.boot:spring-boot-starter-web") {
-        exclude module: "spring-boot-starter-tomcat"
-    }
-    compile("org.springframework.boot:spring-boot-starter-jetty")
+    compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
 
     compile(rootProject.sourceSets.main.output)
