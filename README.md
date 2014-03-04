@@ -1,4 +1,4 @@
 spring-groovymarkup
 ===================
 
-Support classes for using MarkupTemplateEngine from Spring
+Support classes to be able to use the Groovy MarkupTemplateEngine from Spring.
