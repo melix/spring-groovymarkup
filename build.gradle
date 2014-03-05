@@ -3,7 +3,10 @@ allprojects {
     apply plugin: 'idea'
 }
 repositories {
-    mavenLocal()
+    maven {
+        // for Groovy snapshots
+        url 'https://oss.jfrog.org/oss-snapshot-local/'
+    }
     mavenCentral()
 }
 
@@ -14,10 +17,11 @@ sourceSets {
     main { compileClasspath += configurations.provided }
 }
 
+ext.groovyVersion = '2.3.0-SNAPSHOT'
 
 dependencies {
     provided "javax.servlet:servlet-api:2.5"
-    provided 'org.codehaus.groovy:groovy-all:2.3.0-SNAPSHOT'
+    provided "org.codehaus.groovy:groovy-all:$groovyVersion"
     provided 'org.springframework:spring-webmvc:4.0.2.RELEASE'
 }
 

@@ -1,7 +1,10 @@
 buildscript {
     repositories {
         maven { url "http://repo.spring.io/libs-snapshot" }
-        mavenLocal()
+        maven {
+            // for Groovy snapshots
+            url 'https://oss.jfrog.org/oss-snapshot-local/'
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC4")
@@ -14,8 +17,6 @@ apply plugin: 'application'
 
 mainClassName = 'com.acme.boot.Application'
 
-ext.groovyVersion = '2.3.0-SNAPSHOT'
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -23,8 +24,8 @@ repositories {
 }
 
 dependencies {
-    compile("org.codehaus.groovy:groovy:$groovyVersion")
-    compile("org.codehaus.groovy:groovy-templates:$groovyVersion")
+    compile("org.codehaus.groovy:groovy:${rootProject.groovyVersion}")
+    compile("org.codehaus.groovy:groovy-templates:${rootProject.groovyVersion}")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
 
