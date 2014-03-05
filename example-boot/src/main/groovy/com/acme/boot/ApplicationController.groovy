@@ -9,13 +9,13 @@ class ApplicationController {
 
     @RequestMapping("/")
     String home() {
-        'hello.groovy'
+        'views/hello.groovy'
     }
 
     @RequestMapping("/typechecked")
     String typechecked(Model model) {
         model.addAttribute('title', 'A type checked template!')
-        'typechecked.groovy'
+        'views/typechecked.groovy'
     }
 
 

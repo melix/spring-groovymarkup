@@ -15,6 +15,7 @@
  */
 package org.springframework.web.servlet.groovy;
 
+import groovy.text.Template;
 import groovy.text.markup.MarkupTemplateEngine;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.View;
@@ -26,43 +27,33 @@ import java.util.Map;
 
 public class MarkupTemplateViewResolver extends AbstractCachingViewResolver implements Ordered {
 
-    public final static String DEFAULT_BASENAME = "views";
-
-    private String baseName = DEFAULT_BASENAME;
-
-    private MarkupTemplateEngine engine;
+    private LocaleAwareEngineFactory factory;
     private int order;
-    private Map<String,Map<String,String>> viewModels = new HashMap<>();
+    private Map<String, Map<String, String>> viewModels = new HashMap<>();
 
-    public String getBaseName() {
-        return baseName;
+    public LocaleAwareEngineFactory getFactory() {
+        return factory;
     }
 
-    public void setBaseName(final String baseName) {
-        this.baseName = baseName;
-    }
-
-    public MarkupTemplateEngine getEngine() {
-        return engine;
-    }
-
-    public void setEngine(final MarkupTemplateEngine engine) {
-        this.engine = engine;
+    public void setFactory(final LocaleAwareEngineFactory factory) {
+        this.factory = factory;
     }
 
     @Override
     protected View loadView(final String viewName, final Locale locale) throws Exception {
         Map<String, String> model = viewModels.get(viewName);
-        if (model!=null) {
-            return new GroovyTemplateEngineView(engine.createTypeCheckedModelTemplateByPath(createTemplatePath(viewName, locale), model));
+        Template template;
+        if (model != null) {
+            template = factory.getEngine(locale).createTypeCheckedModelTemplateByPath(createTemplatePath(viewName, locale), model);
         } else {
-            return new GroovyTemplateEngineView(engine.createTemplateByPath(createTemplatePath(viewName, locale)));
+            template = factory.getEngine(locale).createTemplateByPath(createTemplatePath(viewName, locale));
         }
+        return new GroovyTemplateEngineView(template);
     }
 
     private String createTemplatePath(final String viewName, final Locale locale) {
-        MarkupTemplateEngine.TemplateResource resource = MarkupTemplateEngine.TemplateResource.parse(baseName+"/"+viewName);
-        resource.withLocale(locale.toLanguageTag().replace("-","_"));
+        MarkupTemplateEngine.TemplateResource resource = MarkupTemplateEngine.TemplateResource.parse(viewName);
+        resource.withLocale(locale.toString().replace("-", "_"));
         return resource.toString();
     }
 
