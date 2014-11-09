@@ -17,11 +17,11 @@ sourceSets {
     main { compileClasspath += configurations.provided }
 }
 
-ext.groovyVersion = '2.3.0-SNAPSHOT'
+ext.groovyVersion = '2.3.7'
 
 dependencies {
     provided "javax.servlet:servlet-api:2.5"
     provided "org.codehaus.groovy:groovy-all:$groovyVersion"
-    provided 'org.springframework:spring-webmvc:4.0.2.RELEASE'
+    provided 'org.springframework:spring-webmvc:4.1.1.RELEASE'
 }
 
